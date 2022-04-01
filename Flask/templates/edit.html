@@ -1,0 +1,23 @@
+{% extends 'layout.html' %}
+{% block body %}
+  <div class='row'>
+    <div class='col-5 mx-auto'>
+      <h3>Edit Expense</h3><hr>
+      <form method='post' action='{{url_for("edit",uid=datas.Trxn_ID)}}'>
+        <div class='form-group'>
+          <label>Amount</label>
+          <input type='text' name='amount' required class='form-control' value='{{datas.amount}}'>
+        </div>
+        <div class='form-group'>
+          <label>Description</label>
+          <input type='text' name='desc' required class='form-control' value='{{datas.description}}'>
+        </div>
+        <div class='form-group'>
+            <label>Method</label>
+            <input type='text' name='method' required class='form-control' value='{{datas.method}}'>
+        </div>
+        <input type='submit' value='Submit' class='btn btn-primary'>
+      </form>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,4 @@
+1. Add limit
+2. Add Progress bar
+3. Add Bar Chart
+4. Monthly Transaction and Reset
