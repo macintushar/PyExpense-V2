@@ -1,6 +1,6 @@
 from flask import Flask,render_template,request,redirect,url_for,flash
 import sqlite3 as sql
-from functions import View_Chart, CurrentLimit, Edit_Limit
+from functions import generateBar, generatePie, CurrentLimit, Edit_Limit
 
 app = Flask(__name__)
 
@@ -19,17 +19,13 @@ def index():
 
     limit = CurrentLimit()
     limit += 0
-
-    if price[0]>limit:
-        color="danger"
-        txt="Warning! Limit crossed."
     
-    elif price[0]<limit:
-        color="success" 
-        lim=limit
-        txt = "Expenditure under the Limit"
 
-    return render_template("index.html",datas=data, total=price, color=color, text=txt, limit=limit) 
+    if txt == "NULL":
+        return render_template("index.html",datas=data, total=price, color=color, limit=limit, progress=progress) 
+    
+    else:
+        return render_template("index.html",datas=data, total=price, color=color, text=txt, limit=limit, progress=progress) 
    
 
 @app.route("/add",methods=['POST','GET'])
@@ -85,7 +81,8 @@ def delete(uid):
 
 @app.route("/charts")
 def charts():
-    View_Chart()
+    generateBar()
+    generatePie()
     return render_template('chart.html')
 
 
@@ -103,6 +100,43 @@ def limit():
     data=cur.fetchone()
 
     return render_template("limit.html", datas=data)
+
+
+@app.route("/categories", methods=['POST','GET'])
+def categories():
+    render_template("categories.html", datas=data)
+
+@app.route("/editCat/<string:uid>",methods=['POST','GET'])
+def editCat(uid):
+    if request.method=='POST':
+        newCategory = request.form['newCategory']
+
+        con=sql.connect("Expenses.db")
+        cur=con.cursor()
+
+        cur.execute("UPDATE Category SET Category =? WHERE Category_ID=?",(category,uid))
+        con.commit()
+
+        flash('Category Updated','success')
+        return redirect(url_for("index"))
+    
+    con=sql.connect("Expenses.db")
+    con.row_factory=sql.Row
+    cur=con.cursor()
+
+    cur.execute("SELECT * FROM Category WHERE Category_ID=?",(uid))
+    data=cur.fetchone()
+
+    return render_template("catEdit.html",datas=data)
+
+@app.route("/deleteCat/<string:uid>",methods=['GET'])
+def deleteCat(uid):
+    con=sql.connect("Expenses.db")
+    cur=con.cursor()
+    cur.execute("DELETE FROM Categories where Category_ID=?",(uid,))
+    con.commit()
+    flash('Category Deleted','warning')
+    return redirect(url_for("index"))
 
 if __name__=='__main__':
     app.secret_key='admin123'

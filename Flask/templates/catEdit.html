@@ -1,0 +1,15 @@
+{% extends 'layout.html' %}
+{% block body %}
+  <div class='row'>
+    <div class='col-5 mx-auto'>
+      <h3>Edit Category</h3><hr>
+      <form method='post' action='{{url_for("edit",uid=datas.Category_ID)}}'>
+        <div class='form-group'>
+          <label>Category</label>
+          <input type='text' name='newCategory' required class='form-control' value='{{datas.amount}}'>
+        </div>
+        <input type='submit' value='Submit' class='btn btn-primary'>
+      </form>
+    </div>
+  </div>
+{% endblock %}

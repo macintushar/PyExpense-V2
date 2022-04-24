@@ -1,4 +1,5 @@
-1. Add limit
 2. Add Progress bar
 3. Add Bar Chart
+    1. Add labels
 4. Monthly Transaction and Reset
+    1. Add Repeated Expense

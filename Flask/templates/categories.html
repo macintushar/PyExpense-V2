@@ -1,0 +1,23 @@
+{% extends 'layout.html' %}
+{% block body %}
+<div class='table-responsive-lg'>
+    <table class='table table-bordered table-striped '>
+      <thead class="table-success">
+        <th>ID</th>
+        <th>Category Name</th>
+        <th>Edit</th>
+        <th>Delete</th>
+      </thead>
+      <tbody>
+        {% for row in datas %}
+          <tr>
+            <td>{{row.Category_ID}}</td>
+            <td>{{row.Category}}</td>
+            <td><a href='{{url_for("editCat",uid=row.Category_ID)}}' class='btn btn-primary'>Edit</a></td>
+            <td><a href='{{url_for("deleteCat",uid=row.Category_ID)}}' class='btn btn-danger' onclick='return confirm("Are You Sure")'>Delete</a></td>
+          </tr>
+        {%endfor%}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
